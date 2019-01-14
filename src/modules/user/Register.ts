@@ -1,11 +1,14 @@
 import * as bcrypt from "bcryptjs";
-import { Query, Mutation, Arg, Resolver } from "type-graphql";
+import { Query, Mutation, Arg, Resolver, UseMiddleware } from "type-graphql";
 
 import { User } from "../../entity/User";
 import { RegisterInput } from "./register/RegisterInput";
+import { isAuth } from "../middleware/isAuth";
+import { logger } from "../middleware/logger";
 
 @Resolver(User)
 export class RegisterResolver {
+  @UseMiddleware(isAuth, logger)
   @Query(() => String)
   async hello() {
     return "Hello World";
